@@ -37,7 +37,7 @@ What you Will Learn
 Alec - One of my majors goals for this semester was to take theoretical concepts, understand them, and implement them on a practical level. Since I will be working with integrating our model predictions within a portfolio framework, this will provide me a chance to understand statistical theory and refresh on my multivariable calculus. I also hope to understand more of the math behind time series analysis and regression, and how we can use this to make probabilisitic predictions. This project will also improve my domain-specific expertise, and enhance my ability to work with high-level machine learning models. 
 
 
-James - 
+James - For the last two summers I have spent a majority of my free time studying oil futures and developing an automated trading algorithm for them. Starting last summer I reached out to some of my past CS professors at Middlebury and tried to start learning about some posssible machine learning techniques I could integrate into my model. Unfortunately, I did not have enough knowledge or time to implement anything substantial. However, in the fall when I saw that machine learning was being taught, I knew I wanted to take the course and focus on the implementation and experimentation side of ML, so I could turn around and apply it to my model. While this project will not follow the exact implementation of the work I have already done, it will act as a strong foundation of both knowledge and actual architecture that I can build off of out of college.
 
 
 Risk Statement:
