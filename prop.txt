@@ -1,0 +1,83 @@
+Authors:
+Alec Kyritsis
+James Hetherington
+
+
+Abstract:
+
+We will consider the effectiveness of automated strategies in financial forcasting and portfolio optimization. Particularly, we will look at low-volatility assets in U.S. markets and examine regression on respective time series data. We will train the model using Wilder Moving Averages, average moving volume, and other composite features of interest. Finally, we will evaluate overall model profitability with respect to risk-free assets returns and S&P Low Volatility Index over the corresponding time frame.
+
+Motivation and Question
+
+
+There are three questions pivotal to our investigation: (1) what assets lend themselves well to regression modeling, (2) what features can we use to produce an acceptable level of accuracy, and (3) what is the optimal time frame to model on. Concerning (3), asset portfolios with medium to long-term horizons often integrate technical and fundamental analysis into the decision making process. We hope to determine if fully-automated strategies can produce returns over a similar time period.
+
+Planned Deliverables:
+
+
+Ambitious Plan: We will develop a profitable model that integrates accurate forecasting with a Bayesian posterior and mean variance analysis. 
+
+Target Plan: We develop a model that corresponds to index profitability, and integrate it with mean variance analysis via Markotwiz portfolio optimization. 
+
+Partial Plan: We define features based on our analysis that theoretically correspond to profitability. We test our hypothesis on small time horizons for choice assets.
+
+In any case, we will deliver: (1) A report discussing relevant background information, feature selection process, technical implementation, and results concerning application scope (asset type, timeframe, etc.). (2) A technical demonstration of our feature selection and model training. 
+
+Resources Required:
+
+There are three major resources our project requires. First, is detailed financial data. Fortunately, we already have access to this via the Quantitative Finance J-term via Midd Files. As a backup, Yahoo! Finance has five-year historicals for virtually all U.S. assets. Although not as detailed, they can serve as an excellent proxy for model training and evaluation.
+
+Second will be computing power. We will likely be able to run proof-of-concepts tests on our local machines. However, for larger tests we will need more a more powerful machine.
+
+Third will be access to relevant literature on topics such as time series regression, financial indicators, and portfolio optimization parameters. Given the amount of research on the topic, this shouldn't be too difficult to find online.
+
+What you Will Learn
+
+
+Alec - One of my majors goals for this semester was to take theoretical concepts, understand them, and implement them on a practical level. Since I will be working with integrating our model predictions within a portfolio framework, this will provide me a chance to understand statistical theory and refresh on my multivariable calculus. I also hope to understand more of the math behind time series analysis and regression, and how we can use this to make probabilisitic predictions. This project will also improve my domain-specific expertise, and enhance my ability to work with high-level machine learning models. 
+
+
+James - 
+
+
+Risk Statement:
+
+There are two major risks associated with this project. First a major risk in this project is that we will not be able to find any good features that predict stock price. Second, is that model testing and training will take a long time (regardless of computational power). This can make it difficult to find an optimal feature set, as testing iterations will be relatively limited. We can mitigate both risks 
+
+
+
+Ethics Statement:
+
+It is important be pragmatic about the implications of our projects. An entire multi-billion dollar industry has been dedicated to achieving similar goals. It is unlikely that we will develop a product that majorly disrupts the status-quo, particularly since we are working with simulated data. With that being said, let's assume that we do create something with a high-degree use value. Finance, mathematics, and computer science have traditionally been gate-kept by bombastic jargon and male-dominated culture. These disciplines often cater to wealthier individuals, who have the wealth to risk in financial markets and/or money to buy the time to study these fields. As a simple product of cumulative percents and variances, it is easier to generate returns with less risk the more money one has to invest. 
+
+We intend to make the code and report of this project open to the general public. While we can't decide we gets to use, we can make it accessible. Ideally, this means making the product easy to use for a layperson. More importantly in the final blog post, it means explaining our reasoning, the mathematics, and computer science in an intuitive, easier to understand way. It also means providing the reader with links to concepts that we might not have time to fully explain. 
+
+Ultimately, this is contingent on the fact that individuals have the time to read our report/post, which they may not have. Individuals may also not have the excess savings to invest. However, all types of learning and research come with risk. Even if our project has a small probability of exacerbating systemic inequality, this is a drop in the ocean compared to the existing institutions which facilitate said inequality. On the other hand, the potential for learning is high and known. If done right, we can foster interest from underrepresented groups in finance, mathematics, and computer science.
+
+Tentative Timeline
+
+Week 1 [Week 9] (This week)
+
+Submit project proposal for approval. Construct data pipeline and testing framework. Familiarize ourselves with time series analysis and regression. Research good features, and begin tentative feature selection.
+
+Week 2  [Week 10]
+
+Identify first feature set. Construct portfolio optimizer and buy sell functions. Begin testing model. 
+
+DELIVERIABLE: Dry run of model and relevant data analysis we used to determine input features.
+
+Week 3 [Week 11]
+
+Test model and adapt feature selection. Final model test run, and finalize visualizes.
+
+Week 4 [Week 12]
+
+Write Report and presentation.
+
+DELIVERABLE: Final Report, Blog Post, Product, and Presentation.
+
+
+
+
+ 
+
