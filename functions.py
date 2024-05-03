@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 def loaddata(name: str, start_date = 20100104, end_date = 20211231):
     dates = pd.read_csv("Data_Files/dates.csv", header=None)
@@ -27,3 +28,24 @@ def WWMA(data: pd.DataFrame, ma_period: int):
     print(new)
     return pd.DataFrame(new, index=data.index)
 
+def RSI(data: pd.DataFrame, period: int):
+    rsi_values = []
+    cleaned = data.dropna()
+    av_gain_array = []
+    av_loss_array = []
+    for i in range(len(cleaned)):
+        if i + 1 < period:
+            batch = cleaned.iloc[:i+1]
+            positives = batch[batch >= 0]
+            negatives = batch[batch < 0]
+            av_gain_array.append((positives.sum()+.001) / (i+1))        
+            av_loss_array.append(((-1*negatives.sum())+.001) / (i+1))
+        else:
+            current_move = cleaned.iloc[i]
+            pos = current_move if current_move >= 0 else 0
+            neg = -1*(current_move) if current_move < 0 else 0
+            av_gain_array.append(((av_gain_array[i-1] * (period-1)) + pos)/period)
+            av_loss_array.append(((av_loss_array[i-1] * (period-1)) + neg)/period)
+    #print(np.array(av_gain_array), np.array(av_loss_array) )
+    RS = np.array(av_gain_array) / np.array(av_loss_array)
+    return 100 - (100/(1+RS))

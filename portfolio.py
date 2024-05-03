@@ -33,8 +33,8 @@ class Portfolio:
             market_cap := 1 x k column of market capitalizatioin at s_i
         (optional) target_returns := target returns of portfolio. if blank, allocation is based on market capitalization weights 
         """
-        short_group = decision_data[decision_data["pred"] == 1]
-        long_group =  decision_data[decision_data["pred"] == 2]
+        short_group = decision_data[decision_data["pred"] == 0]
+        long_group =  decision_data[decision_data["pred"] == 1]
         self.clear_position(decision_data)
         self.position_size = self.cash
         self.value = self.cash
