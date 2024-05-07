@@ -10,8 +10,10 @@ def loaddata(name: str, start_date = 20100104, end_date = 20211231):
 
 def MACD(data: pd.DataFrame, ema_long: int, ema_short: int, signal_length: int):
 
-    long = data.dropna().ewm(span=ema_long, ignore_na=True).mean()
-    short = data.dropna().ewm(span=ema_short, ignore_na=True).mean()
+    #long = data.dropna().ewm(span=ema_long, ignore_na=True).mean()
+    #short = data.dropna().ewm(span=ema_short, ignore_na=True).mean()
+    long = data.ewm(span=ema_long, ignore_na=True).mean()
+    short = data.ewm(span=ema_short, ignore_na=True).mean()
     macd = short - long
     signal = macd.ewm(span=signal_length, ignore_na=True).mean()
 
@@ -30,12 +32,12 @@ def WWMA(data: pd.DataFrame, ma_period: int):
 
 def RSI(data: pd.DataFrame, period: int):
     rsi_values = []
-    cleaned = data.dropna()
+    cleaned = data
     av_gain_array = []
     av_loss_array = []
     for i in range(len(cleaned)):
         if i + 1 < period:
-            batch = cleaned.iloc[:i+1]
+            batch = cleaned.iloc[:i+1].dropna()
             positives = batch[batch >= 0]
             negatives = batch[batch < 0]
             av_gain_array.append((positives.sum()+.001) / (i+1))        
@@ -46,6 +48,5 @@ def RSI(data: pd.DataFrame, period: int):
             neg = -1*(current_move) if current_move < 0 else 0
             av_gain_array.append(((av_gain_array[i-1] * (period-1)) + pos)/period)
             av_loss_array.append(((av_loss_array[i-1] * (period-1)) + neg)/period)
-    #print(np.array(av_gain_array), np.array(av_loss_array) )
     RS = np.array(av_gain_array) / np.array(av_loss_array)
     return 100 - (100/(1+RS))
