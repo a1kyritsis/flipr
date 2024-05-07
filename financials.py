@@ -29,13 +29,16 @@ class financials:
         return time_slice_vector.mean()
     
     def expo_moving_average(time_slice_vector):
+
         """
         Takes a 1 x i time time slice vector of residuals
         where i :=  number of days and calculates
         a base 2 expodential moving average
         """
-        i = len(time_slice_vector) # get number of days
-        w = (pd.Series(np.cumprod([1/2] * i))[::-1]).transpose() # calculates base 2 expodential weights
+        time_slice_vector = time_slice_vector.reset_index(drop = True)
+        i = time_slice_vector.size # get number of days
+        w = np.exp(np.arange(i))
+        w = pd.Series(w / np.sum(w))
         return (w * time_slice_vector).sum()
 
 
@@ -46,9 +49,11 @@ class financials:
         coeffecient gamma and calculates the upper 
         boiler band of an expodential moving average
         """
+        m = financials.expo_moving_average(time_slice_vector)
+        time_slice_vector = time_slice_vector.reset_index(drop = True)
         sd = time_slice_vector.std()
         gamma = 1
-        return financials.expo_moving_average(time_slice_vector) + gamma * sd
+        return m + gamma * sd
 
     def lower_boiler_band(time_slice_vector):
         """
@@ -57,9 +62,11 @@ class financials:
         coeffecient gamma and calculates the lower 
         boiler band of an expodential moving average
         """
+        m = financials.expo_moving_average(time_slice_vector)
+        time_slice_vector = time_slice_vector.reset_index(drop = True)
         sd = time_slice_vector.std()
         gamma = 1
-        return financials.expo_moving_average(time_slice_vector) - gamma * sd
+        return m - gamma * sd
 
     def signal_to_noise(time_slice_vector):
         """
@@ -69,8 +76,10 @@ class financials:
         m := expo moving average and v :=  variance 
         (W.R.T. time_slice)
         """
+        m = financials.expo_moving_average(time_slice_vector)
+        time_slice_vector = time_slice_vector.reset_index(drop = True)
         v = time_slice_vector.var()
-        return financials.expo_moving_average(time_slice_vector) / v
+        return  m / v
 
 class fin_handlers:
 
@@ -82,6 +91,7 @@ class fin_handlers:
         list financial functions of size f, and
         optional labels. Returns an n x f feature matrix.
         """
+
         if data_matrix.shape[0] <= 0:
             return pd.DataFrame()
         if data_matrix.shape[1] <= 1:
@@ -93,11 +103,13 @@ class fin_handlers:
             labels = []
             for i in range(0, f):
                 labels.append("f_" + str(i))
-        
+
+        indices = np.arange(data_matrix.shape[1])
+
         def row_wise_apply(row):
 
-             return pd.Series([func(row) for func in fin_functions])
-
+            return pd.Series([func(row) for func in fin_functions])
+        
         feature_matrix = data_matrix.apply(row_wise_apply, axis=1)
         feature_matrix.columns = labels
         return feature_matrix

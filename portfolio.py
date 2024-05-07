@@ -52,7 +52,7 @@ class Portfolio:
         if ((short_group.shape[0] + long_group.shape[0]) == 0): # we are not making any updates 
             percent_alloc = 0 # the allocation size is 0
         else:
-            percent_alloc = 1 / (short_group.shape[0] + long_group.shape[0]) # else, devide equally among the positions we are taking
+            percent_alloc = 1 / (short_group.shape[0] + long_group.shape[0]) # else, devide equally among the positions we are taking #self.holdings.shape[0]
 
         self.cash += self.short(short_group, percent_alloc) # if we are shorting, we see the stock at its curret price
         self.cash -= self.long(long_group, percent_alloc) # if we are going long, we buy the stocks
@@ -123,7 +123,7 @@ class Portfolio:
         """
         if clear_group.shape[0] <= 0:
             return
-        print("clearing")
+
         indices = clear_group["asset_index"] # grab the indices of the group
         clear_group["position"] = self.holdings.loc[indices, "position"]
         self.sell_long(clear_group[clear_group["position"] == LONG])
