@@ -7,7 +7,7 @@ class financials:
         """
         Takes in a k x i matrix of asset prices
         where k := number of assets and
-        n := number of days and return
+        i := number of days and return
         residual returns for days 1 to i
         as pd df
         """
@@ -76,7 +76,7 @@ class fin_handlers:
 
     def create_features(data_matrix, fin_functions, labels = None):
         """
-        Takes an n x i data matrix of raw prices where
+        Takes an n x i data matrix of residuals where
         i := time slice and n := number of observations
         (observations may be of the same asset),
         list financial functions of size f, and
@@ -98,7 +98,6 @@ class fin_handlers:
 
              return pd.Series([func(row) for func in fin_functions])
 
-        data_matrix = financials.residual_returns(data_matrix)
         feature_matrix = data_matrix.apply(row_wise_apply, axis=1)
         feature_matrix.columns = labels
         return feature_matrix
