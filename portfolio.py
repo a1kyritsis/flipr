@@ -38,6 +38,7 @@ class Portfolio:
             market_cap := 1 x k column of market capitalizatioin at s_i
         (optional) target_returns := target returns of portfolio. if blank, allocation is based on market capitalization weights 
         """
+        self.update_value(decision_data)
         stock_updates = decision_data[decision_data["position"] != self.holdings["position"]] # grab all the stocks that need to have positions changed
         clear_group = stock_updates[stock_updates["position"] == CLEAR] # get the group for which positions we are clearing
         short_group = stock_updates[stock_updates["position"] == SHORT] # group for which positions are being shorted
@@ -54,10 +55,8 @@ class Portfolio:
         else:
             percent_alloc = 1 / (short_group.shape[0] + long_group.shape[0]) # else, devide equally among the positions we are taking #self.holdings.shape[0]
 
-        self.cash += self.short(short_group, percent_alloc) # if we are shorting, we see the stock at its curret price
+        self.cash -= self.short(short_group, percent_alloc) # if we are shorting, we see the stock at its curret price
         self.cash -= self.long(long_group, percent_alloc) # if we are going long, we buy the stocks
-
-        self.update_value(decision_data)
 
     def long(self, buy_group, percent_alloc):
         """
@@ -113,7 +112,7 @@ class Portfolio:
         if short_cover_group.shape[0] <= 0: #nothing to do
             return
         indices = short_cover_group["asset_index"]
-        self.cash -= (self.holdings.loc[indices, "holdings"] * short_cover_group["price"]).sum()
+        self.cash += (self.holdings.loc[indices, "holdings"] * (2 * self.holdings.loc[indices, "short_price"] - short_cover_group.loc[indices, "price"])).sum()
         return
 
     def clear_position(self, clear_group):

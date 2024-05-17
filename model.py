@@ -5,17 +5,18 @@ from financials import financials
 from financials import fin_handlers
 # !!! include potential models in imports !!!
 from sklearn.linear_model import LogisticRegression 
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import PolynomialFeatures
 
 SHORT = 0
 LONG = 1
 CLEAR = 2
 DATE_BUFFER = 2
+DEGREE = 2
 
 
 class Fin_model:
 
-    def __init__(self, model, fin_functions, labels = None):
+    def __init__(self, model, fin_functions, labels = None, feature_map = None):
         """
         fin_functions := a list of metrics we will train on
         labels := name of financial metrics
@@ -23,6 +24,11 @@ class Fin_model:
         self.model = model()
         self.fin_functions = fin_functions
         self.labels = labels
+        if feature_map == None:
+            self.map = feature_map
+        else:
+
+            self.map = PolynomialFeatures(degree = DEGREE)
 
     def label(self, target_day, epsilon = None):
         """
@@ -122,13 +128,24 @@ class Fin_model:
 
         train_accuracy = self.model.score(training_features, labels)
 
-        print("Accuracy on training data:", train_accuracy)
-
         return
 
     def train_with_feature_map(self, asset_indices, Delta, training_data, k_samples = None):
 
-        pass
+        if k_samples == None:
+            training_features, labels = self.get_sequential_features(asset_indices, Delta, training_data)
+        else:
+            training_features, labels = self.get_sample_features(asset_indices, Delta, k_samples, training_data)
+        
+        if training_features.empty:
+            print("Training failed.")
+            return
+        
+        transformed_features = self.map.fit_transform(training_features)
+        self.model.fit(transformed_features, labels)
+
+        return
+            
 
     def get_prediction_features(self, day, Delta, asset_indices, data_matrix):
 
@@ -151,4 +168,16 @@ class Fin_model:
         feature_matrx = self.get_prediction_features(day, Delta, asset_indices, data_matrix)
         preds = self.model.predict(feature_matrx)
         return preds
+    
+    def predict_with_feature_map(self, day, Delta, asset_indices, data_matrix):
+
+        if data_matrix.shape[0] <= 0:
+            return CLEAR * np.ones(data_matrix.shape[1])
+        
+        feature_matrx = self.get_prediction_features(day, Delta, asset_indices, data_matrix)
+        transformed_features = self.map.transform(feature_matrx)
+        preds = self.model.predict(transformed_features)
+        return preds
+
+
 
